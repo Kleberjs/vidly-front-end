@@ -17,7 +17,13 @@ class Movies extends Component {
 
   handleDelete = movie => {
     const movies = this.state.movies.filter(m => m !== movie);
+
     this.setState({ movies });
+
+    const pages = Math.ceil(movies.length / this.state.pageItem);
+
+    if (this.state.currentPage > pages)
+      this.handlePaginate(this.state.currentPage - 1);
   };
 
   handleLike = movie => {
@@ -40,7 +46,7 @@ class Movies extends Component {
       currentPage
     } = this.state;
 
-    if (allMovies.length === 0) return <p>There is no movies yet</p>;
+    if (allMovies.length === 0) return <p>There are no movies</p>;
 
     const movies = paginate(allMovies, pageItem, currentPage);
 

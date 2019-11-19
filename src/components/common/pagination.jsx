@@ -5,6 +5,8 @@ const Pagination = ({ totalItem, itemPage, currentPage, onPaginate }) => {
   const totalPages = Math.ceil(totalItem / itemPage);
   const pages = _.range(1, totalPages + 1);
 
+  if (totalPages === 1) return null;
+
   return (
     <nav>
       <ul className="pagination">
