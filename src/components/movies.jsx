@@ -29,8 +29,12 @@ class Movies extends Component {
               <td>{movie.genre.name}</td>
               <td>{movie.numberInStock}</td>
               <td>{movie.numberInStock}</td>
-              <td></td>
-              <td></td>
+              <td>
+                <i className="fa fa-heart-o"></i>
+              </td>
+              <td>
+                <button className="btn btn-danger btn-sm m-2">Delete</button>
+              </td>
             </tr>
           ))}
         </tbody>
