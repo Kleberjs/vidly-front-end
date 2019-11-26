@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { getMovies } from "./../services/fakeMovieService";
 import { getGenres } from "./../services/fakeGenreService";
+import TableHeader from "./tableHeader";
 import Like from "./common/like";
 import GroupList from "./common/groupList";
 import Pagination from "./common/pagination";
@@ -12,11 +13,11 @@ class Movies extends Component {
     genres: [],
     pageItem: 4,
     currentPage: 1,
-    currentGenre: { key: "5b21ca3eeb7f6fbccd471818", name: "Action" }
+    currentGenre: { key: "allMovies", name: "AllMovies" }
   };
 
   componentDidMount() {
-    const genres = [{ key: "", name: "AllMovies" }, ...getGenres()];
+    const genres = [{ key: "allMovies", name: "AllMovies" }, ...getGenres()];
     this.setState({ movies: getMovies(), genres });
   }
 
@@ -44,12 +45,11 @@ class Movies extends Component {
   };
 
   handleGenre = currentGenre => {
-    this.setState({ currentGenre });
+    this.setState({ currentGenre, currentPage: 1 });
   };
 
   render() {
     const {
-      movies: { length: countMovies },
       movies: allMovies,
       genres,
       pageItem,
@@ -59,8 +59,19 @@ class Movies extends Component {
 
     if (allMovies.length === 0) return <p>There are no movies</p>;
 
-    const movies = paginate(allMovies, pageItem, currentPage);
+    const filtered = currentGenre._id
+      ? allMovies.filter(movie => movie.genre._id === currentGenre._id)
+      : allMovies;
 
+    const movies = paginate(filtered, pageItem, currentPage);
+
+
+    const headers = [
+      {_id: "title", name: "Title"},
+      {_id: "genre", name: "Genre"},
+      {_id: "numberInStock", name: "Stock"},
+      {_id: "dailyRentalRate", name: "Rate"}
+    ]
     return (
       <div className="row">
         <div className="col-2">
@@ -71,18 +82,9 @@ class Movies extends Component {
           />
         </div>
         <div className="col">
-          <p>There is {countMovies} movies in the database</p>
+          <p>There is {filtered.length} movies in the database</p>
           <table className="table">
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Genre</th>
-                <th>Stock</th>
-                <th>Rate</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
+            <TableHeader headers={headers}/>
             <tbody>
               {movies.map(movie => (
                 <tr key={movie._id}>
@@ -106,7 +108,7 @@ class Movies extends Component {
             </tbody>
           </table>
           <Pagination
-            totalItem={countMovies}
+            totalItem={filtered.length}
             itemPage={pageItem}
             currentPage={currentPage}
             onPaginate={this.handlePaginate}

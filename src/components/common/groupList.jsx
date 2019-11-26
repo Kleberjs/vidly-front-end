@@ -5,9 +5,10 @@ const GroupList = ({ itens, currentItem, onItemHandle }) => {
     <ul className="list-group">
       {itens.map(item => (
         <li
+          style={{ cursor: "pointer" }}
           key={item._id || item.key}
           className={
-            item._id === currentItem._id
+            item.name === currentItem.name
               ? "list-group-item active"
               : "list-group-item"
           }
