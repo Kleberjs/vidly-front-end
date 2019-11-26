@@ -1,4 +1,3 @@
-
 /**
  * IMPLEMENTAR O ORDENAMENTO POR: title, genre, stock or rate
  */
@@ -10,6 +9,7 @@ import { getGenres } from "./../services/fakeGenreService";
 import GroupList from "./common/groupList";
 import Pagination from "./common/pagination";
 import paginate from "./../utils/paginate";
+import _ from "lodash";
 
 class Movies extends Component {
   state = {
@@ -17,6 +17,7 @@ class Movies extends Component {
     genres: [],
     pageItem: 4,
     currentPage: 1,
+    currentSort: { path: "title", order: "asc" },
     currentGenre: { key: "allMovies", name: "AllMovies" }
   };
 
@@ -52,13 +53,18 @@ class Movies extends Component {
     this.setState({ currentGenre, currentPage: 1 });
   };
 
+  handleSort = currentSort => {
+    this.setState({ currentSort });
+  };
+
   render() {
     const {
       movies: allMovies,
       genres,
       pageItem,
       currentPage,
-      currentGenre
+      currentGenre,
+      currentSort
     } = this.state;
 
     if (allMovies.length === 0) return <p>There are no movies</p>;
@@ -67,7 +73,13 @@ class Movies extends Component {
       ? allMovies.filter(movie => movie.genre._id === currentGenre._id)
       : allMovies;
 
-    const movies = paginate(filtered, pageItem, currentPage);
+    const orderBy = _.orderBy(
+      filtered,
+      [currentSort.path],
+      [currentSort.order]
+    );
+
+    const movies = paginate(orderBy, pageItem, currentPage);
 
     return (
       <div className="row">
@@ -80,7 +92,13 @@ class Movies extends Component {
         </div>
         <div className="col">
           <p>There is {filtered.length} movies in the database</p>
-          <TableMovies movies={movies} onLike={this.handleLike} onDelete={this.handleDelete} />
+          <TableMovies
+            movies={movies}
+            currentSort={currentSort}
+            onLike={this.handleLike}
+            onDelete={this.handleDelete}
+            onSort={this.handleSort}
+          />
           <Pagination
             totalItem={filtered.length}
             itemPage={pageItem}
