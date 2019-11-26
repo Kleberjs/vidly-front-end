@@ -12,12 +12,14 @@ const Pagination = ({ totalItem, itemPage, currentPage, onPaginate }) => {
       <ul className="pagination">
         {pages.map(page => (
           <li
-            style={{cursor:"pointer"}}
+            style={{ cursor: "pointer" }}
             onClick={() => onPaginate(page)}
             key={page}
             className={currentPage === page ? "page-item active" : "page-item"}
           >
-            <a className="page-link">{page}</a>
+            <a href="/#" className="page-link">
+              {page}
+            </a>
           </li>
         ))}
       </ul>

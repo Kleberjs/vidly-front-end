@@ -7,7 +7,9 @@ const TableBody = ({ items, columns }) => {
       {items.map(item => (
         <tr key={item._id}>
           {columns.map(col => (
-            <td key={col.path || col.key}>{_.get(item, col.path)}</td>
+            <td key={col.path || col.key}>
+              {_.get(item, col.path) || col.content(item)}
+            </td>
           ))}
         </tr>
       ))}

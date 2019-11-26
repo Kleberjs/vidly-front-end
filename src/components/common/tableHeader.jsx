@@ -23,11 +23,8 @@ const TableHeader = ({ columns, currentSort, onSort }) => {
         <i className="fa fa-chevron-down" aria-hidden="true"></i>
       );
     }
-
     return null;
-    // <i class="fa fa-chevron-up" aria-hidden="true"></i>
   };
-  const icon = <i className="fa fa-chevron-up"></i>;
 
   return (
     <thead>
