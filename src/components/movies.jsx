@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { getMovies } from "./../services/fakeMovieService";
 import { getGenres } from "./../services/fakeGenreService";
-import TableHeader from "./tableHeader";
 import Like from "./common/like";
 import GroupList from "./common/groupList";
 import Pagination from "./common/pagination";
@@ -65,13 +64,6 @@ class Movies extends Component {
 
     const movies = paginate(filtered, pageItem, currentPage);
 
-
-    const headers = [
-      {_id: "title", name: "Title"},
-      {_id: "genre", name: "Genre"},
-      {_id: "numberInStock", name: "Stock"},
-      {_id: "dailyRentalRate", name: "Rate"}
-    ]
     return (
       <div className="row">
         <div className="col-2">
@@ -84,7 +76,16 @@ class Movies extends Component {
         <div className="col">
           <p>There is {filtered.length} movies in the database</p>
           <table className="table">
-            <TableHeader headers={headers}/>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Stock</th>
+                <th>Rate</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
             <tbody>
               {movies.map(movie => (
                 <tr key={movie._id}>
