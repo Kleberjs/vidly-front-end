@@ -1,5 +1,6 @@
 import React from "react";
 import TableHeader from "./common/tableHeader";
+import TableBody from "./common/tableBody";
 import Like from "./common/like";
 
 const TableMovies = ({ movies, currentSort, onLike, onDelete, onSort }) => {
@@ -19,7 +20,8 @@ const TableMovies = ({ movies, currentSort, onLike, onDelete, onSort }) => {
         currentSort={currentSort}
         onSort={onSort}
       />
-      <tbody>
+      <TableBody items={movies} columns={columns} />
+      {/* <tbody>
         {movies.map(movie => (
           <tr key={movie._id}>
             <td>{movie.title}</td>
@@ -39,7 +41,7 @@ const TableMovies = ({ movies, currentSort, onLike, onDelete, onSort }) => {
             </td>
           </tr>
         ))}
-      </tbody>
+      </tbody> */}
     </table>
   );
 };

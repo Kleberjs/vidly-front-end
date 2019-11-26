@@ -6,8 +6,10 @@ const TableHeader = ({ columns, currentSort, onSort }) => {
     if (currentSort.path === path)
       currentSort.order = currentSort.order === "asc" ? "desc" : "asc";
     else {
-      currentSort.path = path;
-      currentSort.order = "asc";
+      if (path) {
+        currentSort.path = path;
+        currentSort.order = "asc";
+      }
     }
 
     onSort(currentSort); // herdado
@@ -16,9 +18,9 @@ const TableHeader = ({ columns, currentSort, onSort }) => {
   const handleIcon = (currentSort, path) => {
     if (currentSort.path === path) {
       return currentSort.order === "asc" ? (
-        <i class="fa fa-chevron-up" aria-hidden="true"></i>
+        <i className="fa fa-chevron-up" aria-hidden="true"></i>
       ) : (
-        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+        <i className="fa fa-chevron-down" aria-hidden="true"></i>
       );
     }
 
