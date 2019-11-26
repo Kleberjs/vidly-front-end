@@ -15,12 +15,12 @@ const TableHeader = ({ columns, currentSort, onSort }) => {
     onSort(currentSort); // herdado
   };
 
-  const handleIcon = (currentSort, path) => {
+  const renderSortIcon = (currentSort, path) => {
     if (currentSort.path === path) {
       return currentSort.order === "asc" ? (
-        <i className="fa fa-chevron-up" aria-hidden="true"></i>
+        <i className="fa fa-sort-asc" aria-hidden="true"></i>
       ) : (
-        <i className="fa fa-chevron-down" aria-hidden="true"></i>
+        <i className="fa fa-sort-desc" aria-hidden="true"></i>
       );
     }
     return null;
@@ -36,7 +36,7 @@ const TableHeader = ({ columns, currentSort, onSort }) => {
             onClick={() => raiseSort(column.path)}
           >
             {column.name}
-            {handleIcon(currentSort, column.path)}
+            {renderSortIcon(currentSort, column.path)}
           </th>
         ))}
       </tr>
