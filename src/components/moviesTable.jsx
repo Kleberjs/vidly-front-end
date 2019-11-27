@@ -2,7 +2,7 @@ import React from "react";
 import Table from "./common/table";
 import Like from "./common/like";
 
-const TableMovies = ({ movies, currentSort, onLike, onDelete, onSort }) => {
+const MoviesTable = ({ movies, currentSort, onLike, onDelete, onSort }) => {
   const columns = [
     { path: "title", name: "Title" },
     { path: "genre.name", name: "Genre" },
@@ -32,4 +32,4 @@ const TableMovies = ({ movies, currentSort, onLike, onDelete, onSort }) => {
   );
 };
 
-export default TableMovies;
+export default MoviesTable;

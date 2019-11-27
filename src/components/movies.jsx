@@ -1,9 +1,5 @@
-/**
- * IMPLEMENTAR O ORDENAMENTO POR: title, genre, stock or rate
- */
-
 import React, { Component } from "react";
-import TableMovies from "./tableMovies";
+import MoviesTable from "./moviesTable";
 import { getMovies } from "./../services/fakeMovieService";
 import { getGenres } from "./../services/fakeGenreService";
 import GroupList from "./common/groupList";
@@ -25,6 +21,30 @@ class Movies extends Component {
     const genres = [{ key: "allMovies", name: "AllMovies" }, ...getGenres()];
     this.setState({ movies: getMovies(), genres });
   }
+
+  getDataPagination = () => {
+    const {
+      movies: allMovies,
+      pageItem,
+      currentPage,
+      currentGenre,
+      currentSort
+    } = this.state;
+
+    const filtered = currentGenre._id
+      ? allMovies.filter(movie => movie.genre._id === currentGenre._id)
+      : allMovies;
+
+    const orderBy = _.orderBy(
+      filtered,
+      [currentSort.path],
+      [currentSort.order]
+    );
+
+    const movies = paginate(orderBy, pageItem, currentPage);
+
+    return { totalCount: filtered.length, data: movies };
+  };
 
   handleDelete = movie => {
     const movies = this.state.movies.filter(m => m !== movie);
@@ -67,19 +87,9 @@ class Movies extends Component {
       currentSort
     } = this.state;
 
+    const { totalCount, data: movies } = this.getDataPagination();
+
     if (allMovies.length === 0) return <p>There are no movies</p>;
-
-    const filtered = currentGenre._id
-      ? allMovies.filter(movie => movie.genre._id === currentGenre._id)
-      : allMovies;
-
-    const orderBy = _.orderBy(
-      filtered,
-      [currentSort.path],
-      [currentSort.order]
-    );
-
-    const movies = paginate(orderBy, pageItem, currentPage);
 
     return (
       <div className="row">
@@ -91,8 +101,8 @@ class Movies extends Component {
           />
         </div>
         <div className="col">
-          <p>There is {filtered.length} movies in the database</p>
-          <TableMovies
+          <p>There is {totalCount} movies in the database</p>
+          <MoviesTable
             movies={movies}
             currentSort={currentSort}
             onLike={this.handleLike}
@@ -100,7 +110,7 @@ class Movies extends Component {
             onSort={this.handleSort}
           />
           <Pagination
-            totalItem={filtered.length}
+            totalItem={totalCount}
             itemPage={pageItem}
             currentPage={currentPage}
             onPaginate={this.handlePaginate}
